@@ -31,7 +31,8 @@ near_sdk::setup_alloc!();
 pub struct Contract {
     token: FungibleToken,
     metadata: LazyOption<FungibleTokenMetadata>,
-    icos: UnorderedMap<u128, u128> // new
+    icos: UnorderedMap<u128, u128>, // new <price in Near, supply/offer>
+    authorized_sellers: UnorderedMap<String, f64> // new <account_id, fee>
 }
 
 const DATA_IMAGE_SVG_NEAR_ICON: &str = "data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 288 288'%3E%3Cg id='l' data-name='l'%3E%3Cpath d='M187.58,79.81l-30.1,44.69a3.2,3.2,0,0,0,4.75,4.2L191.86,103a1.2,1.2,0,0,1,2,.91v80.46a1.2,1.2,0,0,1-2.12.77L102.18,77.93A15.35,15.35,0,0,0,90.47,72.5H87.34A15.34,15.34,0,0,0,72,87.84V201.16A15.34,15.34,0,0,0,87.34,216.5h0a15.35,15.35,0,0,0,13.08-7.31l30.1-44.69a3.2,3.2,0,0,0-4.75-4.2L96.14,186a1.2,1.2,0,0,1-2-.91V104.61a1.2,1.2,0,0,1,2.12-.77l89.55,107.23a15.35,15.35,0,0,0,11.71,5.43h3.13A15.34,15.34,0,0,0,216,201.16V87.84A15.34,15.34,0,0,0,200.66,72.5h0A15.35,15.35,0,0,0,187.58,79.81Z'/%3E%3C/g%3E%3C/svg%3E";
@@ -44,6 +45,15 @@ fn assert_self() {
         "Can only be called by owner"
     );
 }
+
+// Restrict tokens transfer only to authorized sellers  - new
+// fn assert_authorized_seller() {
+//     assert_eq!(
+//         env::current_account_id(),
+//         env::predecessor_account_id(),
+//         "Can only be called by owner"
+//     );
+// }
 
 #[near_bindgen]
 impl Contract {
@@ -79,7 +89,8 @@ impl Contract {
         let mut this = Self {
             token: FungibleToken::new(b"a".to_vec()),
             metadata: LazyOption::new(b"m".to_vec(), Some(&metadata)),
-            icos: UnorderedMap::new(b"i".to_vec())
+            icos: UnorderedMap::new(b"i".to_vec()),
+            authorized_sellers: UnorderedMap::new(b"s".to_vec())
         };
         this.token.internal_register_account(owner_id.as_ref());
         this.token.internal_deposit(owner_id.as_ref(), total_supply.into());
@@ -87,7 +98,7 @@ impl Contract {
     }
 
     /// Create new ICO - new
-    pub fn new_ico(&mut self, near_price: u128, supply: u128) {
+    pub fn new_offer(&mut self, near_price: u128, supply: u128) {
         assert!(env::state_exists(), "Mint initial token supply");
         assert_self();
         let total_ico_supply: u128 = self.icos.values().sum();
@@ -96,22 +107,48 @@ impl Contract {
     }
 
     /// Remove ICO - new
-    pub fn remove_ico(&mut self, near_price: u128) {
+    pub fn remove_offer(&mut self, near_price: u128) {
         assert!(env::state_exists(), "Mint initial token supply");
         assert_self();
         self.icos.remove(&near_price);
     }
 
     /// View ICO - new
-    pub fn get_ico(&self, near_price: u128) -> Option<u128> {
+    pub fn get_offer(&self, near_price: u128) -> Option<u128> {
         return self.icos.get(&near_price);
     }
 
     /// Get paginated ICOs - new
-    pub fn get_icos(&self, from_index: u64, limit: u64) -> Vec<(u128, u128)> {
+    pub fn get_all_offers(&self, from_index: u64, limit: u64) -> Vec<(u128, u128)> {
         let keys = self.icos.keys_as_vector();
         let values = self.icos.values_as_vector();
         (from_index..std::cmp::min(from_index + limit, self.icos.len()))
+            .map(|index| (keys.get(index).unwrap(), values.get(index).unwrap()))
+            .collect()
+    }
+
+    /// Add new authorized ICO tokens seller - new
+    pub fn new_seller(&mut self, account_id: String, fee: f64) {
+        assert_self();
+        self.authorized_sellers.insert(&account_id, &fee);
+    }
+
+    /// Remove authorized seller - new
+    pub fn remove_seller(&mut self, account_id: String) {
+        assert_self();
+        self.authorized_sellers.remove(&account_id);
+    }
+
+    /// View authorized ICO tokens seller - new
+    pub fn get_seller(&self, account_id: String) -> Option<f64> {
+        return self.authorized_sellers.get(&account_id);
+    }
+
+    /// Get all authorized ICO sellers paginated - new
+    pub fn get_all_sellers(&self, from_index: u64, limit: u64) -> Vec<(String, f64)> {
+        let keys = self.authorized_sellers.keys_as_vector();
+        let values = self.authorized_sellers.values_as_vector();
+        (from_index..std::cmp::min(from_index + limit, self.authorized_sellers.len()))
             .map(|index| (keys.get(index).unwrap(), values.get(index).unwrap()))
             .collect()
     }
