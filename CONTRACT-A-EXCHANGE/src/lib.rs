@@ -2,44 +2,34 @@ use near_sdk::borsh::{self, BorshDeserialize, BorshSerialize};
 use near_sdk::{
     env,
     ext_contract,
-    json_types::U128,
     near_bindgen,
     AccountId,
     Promise,
+    PromiseResult
 };
 
 #[near_bindgen]
 #[derive(Default, BorshDeserialize, BorshSerialize)]
 pub struct Exchange {}
 
-// One can provide a name, e.g. `ext` to use for generated methods.
+const YOCTO_NEAR: u128 = 1_000_000_000_000_000_000_000_000; // 1 $NEAR as yoctoNEAR
+
 #[ext_contract(ext)]
 pub trait ExtExchange {
-    fn merge_sort(&self, arr: Vec<u8>) -> PromiseOrValue<Vec<u8>>;
-    fn merge(
-        &self,
-        #[callback_unwrap]
-        #[serializer(borsh)]
-        data0: Vec<u8>,
-        #[callback_unwrap]
-        #[serializer(borsh)]
-        data1: Vec<u8>,
-    ) -> Vec<u8>;
+    fn buy_tokens(&self, ico_account_id: AccountId, amount: u128) -> String;
 }
 
-// If the name is not provided, the namespace for generated methods in derived by applying snake
-// case to the trait name, e.g. ext_status_message.
 #[ext_contract]
 pub trait ExtFtIco {
-    fn new_offer(&mut self, near_price: u128, supply: u128);
-    fn remove_offer(&mut self, near_price: u128);
-    fn get_offer(&self, near_price: u128) -> Option<u128>;
-    fn get_all_offers(&self, from_index: u64, limit: u64) -> Vec<(u128, u128)>;
+    fn get_seller(&self, account_id: String);
+    fn transfer_tokens(&mut self, exchange_account: String, buyer_account_id: AccountId, near_price: u128, tokens: u128, msg: String) -> f64;
+    fn has_storage(&self, account_id: AccountId) -> bool;
 }
 
 #[near_bindgen]
 impl Exchange {
-    pub fn deploy_ft_ico(&self, account_id: AccountId, amount: U128) {
+    /// TO DO: quite interesting - possible improvement: Exchange can deploy complete ICO for some contract/account
+    /* pub fn deploy_ft_ico(&self, account_id: AccountId, amount: U128) {
         Promise::new(account_id)
             .create_account()
             .transfer(amount.0)
@@ -47,32 +37,84 @@ impl Exchange {
             .deploy_contract(
                 include_bytes!("../../CONTRACT-B-FT-ICO/res/fungible_token.wasm").to_vec(),
             );
-    }
-
-    // simple calls
-    pub fn get_offer(&self, account_id: AccountId, near_price: u128) -> Promise {
-        ext_ft_ico::get_offer(near_price, account_id, 0, env::prepaid_gas() / 2)
-    }
-
-    pub fn get_all_offers(&self, account_id: AccountId, from_index: u64, limit: u64) -> Promise {
-        ext_ft_ico::get_all_offers(from_index, limit, account_id, 0, env::prepaid_gas() / 2)
-    }
-
-    // complex call - buying/selling ICO tokens
-    /* pub fn new_offer(&mut self, account_id: AccountId, near_price: u128, supply: u128, from_index: u64, limit: u64) -> Promise {
-        let prepaid_gas = env::prepaid_gas();
-        ext_ft_ico::new_offer(near_price, supply, account_id.clone(), 0, prepaid_gas / 3).then(
-            ext_ft_ico::get_all_offers(
-                from_index,
-                limit,
-                account_id,
-                0,
-                prepaid_gas / 3,
-            ),
-        )
     } */
 
-    pub fn transfer_money(&mut self, account_id: AccountId, amount: u64) {
-        Promise::new(account_id).transfer(amount as u128);
+    pub fn buy_tokens(&mut self, ico_account_id: AccountId, amount: u128) -> u128 {
+        assert_eq!(env::promise_results_count(), 3, "This is a callback method");
+
+        // handle the result from the first cross contract call this method is a callback for
+        let _authorized_seller: f64 = match env::promise_result(0) {
+            PromiseResult::NotReady => unreachable!(),
+            PromiseResult::Failed => env::panic_str("Seller/Exchange is not authorized"),
+            PromiseResult::Successful(result) => near_sdk::serde_json::from_slice::<f64>(&result)
+                .unwrap()
+                .into(),
+        };
+
+        // handle the result from the second cross contract call this method is a callback for
+        let _has_storage_balance: bool = match env::promise_result(1) {
+            PromiseResult::NotReady => unreachable!(),
+            PromiseResult::Failed => env::panic_str("Failed to check storage balance"),
+            PromiseResult::Successful(result) => near_sdk::serde_json::from_slice::<bool>(&result)
+                .unwrap()
+                .into(),
+        };
+
+        // handle the result from the third cross contract call this method is a callback for
+        let fee: u128 = match env::promise_result(2) {
+            PromiseResult::NotReady => unreachable!(),
+            PromiseResult::Failed => env::panic_str("Failed to transfer tokens"),
+            PromiseResult::Successful(result) => {
+                self.transfer_money(
+                    ico_account_id.clone(),
+                    amount,
+                );
+
+                near_sdk::serde_json::from_slice::<u128>(&result)
+                .unwrap()
+                .into()
+            }
+        };
+
+        fee // returns fee, which is sent back from ICO contract to Exchange contract as profit
+    }
+
+    pub fn transfer_tokens(&self, ico_account_id: AccountId, buyer_account_id:AccountId, near_price: u128, tokens: u128, msg: String) -> Promise {
+        let available_balance = env::account_balance() + env::account_locked_balance();
+        assert!(available_balance > near_price * tokens * YOCTO_NEAR + 5*YOCTO_NEAR, "No available balance to finish the transaction: {}", available_balance.to_string());
+        let prepaid_gas = env::prepaid_gas();
+        ext_ft_ico::get_seller(
+            env::current_account_id().to_string(), // function parameter ('account_id')
+            ico_account_id.clone(), // id of contract account
+            0,
+            prepaid_gas/5
+        )
+        .and(ext_ft_ico::has_storage(
+            buyer_account_id.clone(),
+            ico_account_id.clone(),
+            0,
+            prepaid_gas/5
+        ))
+        .and(ext_ft_ico::transfer_tokens(
+            env::current_account_id().to_string(),
+            buyer_account_id.clone(),
+            near_price,
+            tokens,
+            msg,
+            ico_account_id.clone(),
+            0,
+            prepaid_gas/5
+        ))
+        .then(ext::buy_tokens(
+            ico_account_id.clone(),
+            near_price * tokens * YOCTO_NEAR,
+            env::current_account_id(),
+            0,
+            prepaid_gas/5
+        ))
+    }
+
+    pub fn transfer_money(&mut self, account_id: AccountId, amount: u128) {
+        Promise::new(account_id).transfer(amount);
     }
 }
