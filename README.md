@@ -100,7 +100,6 @@ pub fn transfer_money(&mut self, account_id: AccountId, amount: u64)
 
 ```
 
-
 ## Demo usage
 
 ### Build and Dev deploy contracts
@@ -185,3 +184,17 @@ Get FT Balance of `buyer_test_account` - The response should be `1`
 Get FT offer - The response should be `199`
 
     near view $ICO get_offer '{"near_price":20}'
+
+---
+
+## Credits and links
+
+### [Part 2: VUE Frontend + PHP Laravel Gateway](https://github.com/AGNICO/near-ncd-II-ico-exchange-vue-php){:target="_blank" rel="noopener"}
+
+### [NEAR Protocol](https://near.org){:target="_blank" rel="noopener"}
+
+### [NEAR University](https://near.university){:target="_blank" rel="noopener"}
+
+### [<°}))>{ AGNICO.io | Happy BLOCKCHAIN Apps](https://agnico.io){:target="_blank" rel="noopener"}
+
+### [<°}))>{ AGNICO.org | Happy DAO Company](https://agnico.org){:target="_blank" rel="noopener"}
