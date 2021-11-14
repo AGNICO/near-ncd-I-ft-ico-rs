@@ -1,4 +1,4 @@
-# NEAR Fungible Token ICO Exchange
+# NEAR Fungible Token ICO Exchange I (Rust)
 
 [image]
 
