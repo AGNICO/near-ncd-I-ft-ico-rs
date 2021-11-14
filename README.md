@@ -109,10 +109,10 @@ pub fn transfer_money(&mut self, account_id: AccountId, amount: u64)
 
     sh
 
-
-
     ./build.sh
 
+
+#### Contract A:
 
     cd contract-a-exchange
 
@@ -125,11 +125,11 @@ pub fn transfer_money(&mut self, account_id: AccountId, amount: u64)
 
     export EXCHANGE=$CONTRACT_NAME
 
-
 The Seller/Exchange contract dev-account should be the same as `$CONTRACT_NAME`
 
     echo $EXCHANGE $CONTRACT_NAME
 
+#### Contract B:
 
     cd ../contract-b-ft-ico
 
