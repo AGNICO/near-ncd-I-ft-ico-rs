@@ -107,34 +107,34 @@ pub fn transfer_money(&mut self, account_id: AccountId, amount: u64)
 
 ### Build and Dev deploy contracts
 
-`sh`
+    `sh`
 
-`./build.sh`
+    `./build.sh`
 
-`cd contract-a-exchange`
+    `cd contract-a-exchange`
 
-`near dev-deploy --wasmFile res/contract_a_exchange.wasm`
+    `near dev-deploy --wasmFile res/contract_a_exchange.wasm`
 
-`source neardev/dev-account.env`
+    `source neardev/dev-account.env`
 
-`export EXCHANGE=$CONTRACT_NAME`
+    `export EXCHANGE=$CONTRACT_NAME`
 
 The Seller/Exchange contract dev-account should be the same as `$CONTRACT_NAME`
 
-`echo $EXCHANGE $CONTRACT_NAME`
+    `echo $EXCHANGE $CONTRACT_NAME`
 
 
-`cd ../contract-b-ft-ico`
+    `cd ../contract-b-ft-ico`
 
-`near dev-deploy --wasmFile res/fungible_token.wasm`
+    `near dev-deploy --wasmFile res/fungible_token.wasm`
 
-`source neardev/dev-account.env`
+    `source neardev/dev-account.env`
 
-`export ICO=$CONTRACT_NAME`
+    `export ICO=$CONTRACT_NAME`
 
-The FT ICO contract dev-account should be the same as `$CONTRACT_NAME`
+    The FT ICO contract dev-account should be the same as `$CONTRACT_NAME`
 
-`echo $ICO $CONTRACT_NAME`
+    `echo $ICO $CONTRACT_NAME`
 
 ### Initialize the FT ICO contract and get the fungible token metadata
 
