@@ -146,7 +146,7 @@ The FT ICO contract dev-account should be the same as `$CONTRACT_NAME`
 
 ### Initialize the FT ICO contract (B)
 
-    near call $ICO new '{"owner_id": "'$ICO'", "total_supply": "1000", "metadata": { "spec": "ft-1.0.0", "name": "NCD Token", "symbol": "NCDT", "decimals": 2 }}' --accountId $ICO
+    near call $ICO new '{"owner_id": "'$ICO'", "total_supply": "1000", "metadata": { "spec": "ft-1.0.0", "name": "NCD Token", "symbol": "NCDT", "decimals": 0 }}' --accountId $ICO
 
 Get the fungible token metadata
 
