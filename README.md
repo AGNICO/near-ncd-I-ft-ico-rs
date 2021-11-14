@@ -170,7 +170,7 @@ Get all available offers
 
 Add new authorized Seller/Exchange
 
-    near call $ICO new_seller '{"account_id":"''$EXCHANGE", "fee":10.0}' --accountId $ICO
+    near call $ICO new_seller '{"account_id":"'$EXCHANGE'", "fee":10.0}' --accountId $ICO
 
 Get all authorized Sellers/Exchanges
 
