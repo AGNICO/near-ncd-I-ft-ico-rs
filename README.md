@@ -187,14 +187,14 @@ Get FT offer - The response should be `199`
 
 ---
 
-## Credits and links
+# Credits and links
 
-### [Part 2: VUE Frontend + PHP Laravel Gateway](https://github.com/AGNICO/near-ncd-II-ico-exchange-vue-php){:target="_blank" rel="noopener"}
+## [Part 2: VUE Frontend + PHP Laravel Gateway](https://github.com/AGNICO/near-ncd-II-ico-exchange-vue-php)
 
-### [NEAR Protocol](https://near.org){:target="_blank" rel="noopener"}
+## [NEAR Protocol](https://near.org)
 
-### [NEAR University](https://near.university){:target="_blank" rel="noopener"}
+## [NEAR University](https://near.university)
 
-### [<°}))>{ AGNICO.io | Happy BLOCKCHAIN Apps](https://agnico.io){:target="_blank" rel="noopener"}
+## [<°}))>{ AGNICO.io | Happy BLOCKCHAIN Apps](https://agnico.io)
 
-### [<°}))>{ AGNICO.org | Happy DAO Company](https://agnico.org){:target="_blank" rel="noopener"}
+## [<°}))>{ AGNICO.org | Happy DAO Company](https://agnico.org)
