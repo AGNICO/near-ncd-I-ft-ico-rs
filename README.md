@@ -196,5 +196,3 @@ Get FT offer - The response should be `199`
 #### [NEAR University](https://near.university)
 
 #### [<°}))>{ AGNICO.io | Happy BLOCKCHAIN Apps](https://agnico.io)
-
-#### [<°}))>{ AGNICO.org | Happy DAO Company](https://agnico.org)
