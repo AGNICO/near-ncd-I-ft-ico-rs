@@ -1,6 +1,6 @@
 # NEAR Fungible Token ICO Exchange I (Rust)
 
-![Fungible Token ICo Exchange](https://github.com/AGNICO/near-ncd-I-ico-exchange-rs/blob/main/docs/ncd-1.svg)
+![Fungible Token ICo Exchange](https://github.com/AGNICO/near-ncd-I-ico-exchange-rs/blob/master/docs/ncd-1.svg)
 
 [video 1] - Soon
 
