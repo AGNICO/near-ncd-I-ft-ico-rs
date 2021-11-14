@@ -42,7 +42,7 @@ impl Exchange {
     pub fn buy_tokens(&mut self, ico_account_id: AccountId, amount: u128) -> u128 {
         assert_eq!(env::promise_results_count(), 3, "This is a callback method");
 
-        // handle the result from the first cross contract call this method is a callback for
+        // check if the seller/exchange is authorized in FT ICO contract
         let _authorized_seller: f64 = match env::promise_result(0) {
             PromiseResult::NotReady => unreachable!(),
             PromiseResult::Failed => env::panic_str("Seller/Exchange is not authorized"),
@@ -51,7 +51,7 @@ impl Exchange {
                 .into(),
         };
 
-        // handle the result from the second cross contract call this method is a callback for
+        // check if buyer has FT storage
         let _has_storage_balance: bool = match env::promise_result(1) {
             PromiseResult::NotReady => unreachable!(),
             PromiseResult::Failed => env::panic_str("Failed to check storage balance"),
@@ -60,7 +60,7 @@ impl Exchange {
                 .into(),
         };
 
-        // handle the result from the third cross contract call this method is a callback for
+        // transfer tokens
         let fee: u128 = match env::promise_result(2) {
             PromiseResult::NotReady => unreachable!(),
             PromiseResult::Failed => env::panic_str("Failed to transfer tokens"),
