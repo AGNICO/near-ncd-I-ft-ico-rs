@@ -180,7 +180,7 @@ Add storage deposit for a user
 
     near call $ICO storage_deposit '{"account_id": "<buyer_test_acount>"}' --accountId <buyer_test_acount> --deposit 0.00125
 
-Transfer token (minimum deposit from buyer account is needed, so the Exchange gets paid).
+Transfer FT tokens (minimum deposit from buyer account is needed, so the Exchange gets paid).
 
     near call $EXCHANGE transfer_tokens '{"ico_account_id": "'$ICO'", "buyer_account_id": "<buyer_test_acount>", "near_price": 20, "tokens": 1, "msg":"Test transfer"}' --accountId <buyer_test_acount> --gas 300000000000000 --deposit <near_price * tokens>
 
