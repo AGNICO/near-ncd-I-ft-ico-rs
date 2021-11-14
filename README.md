@@ -17,14 +17,13 @@ Any content produced by NEAR, or developer resources that NEAR provides, are for
  * 2) It checks whether the Buyer account has enough storage balance in FT ICO contract (B) to be able to buy FT or not
  * 3) It calls transfer_tokens method in FT ICO contract (B), which transfers FTs to the Buyer account and sends calculated reward/fee back to the Seller/Exchange (A)
  *
- * If all 3 are successful, the buy_tokens method is called and Seller/Exchange contract(A) sends money for tokens to the FT ICO contract (B)
  */
 pub fn transfer_tokens(&self, ico_account_id: AccountId, buyer_account_id:AccountId, near_price: u128, tokens: u128, msg: String) -> Promise
 
 /**
  * Callback method for transfer_tokens cross contract call.
  *
- * If successful, Seller/Exchange contract(A) transfers money (NEAR) for fungible tokens to the FT ICO ICO contract (B).
+ * If all 3 are successful, the buy_tokens method is called and Seller/Exchange contract(A) sends money for tokens to the FT ICO contract (B)
  * This method returns a reward/fee, which is transfered back from FT ICO contract (B) to the Seller/Exchange contract (A) as a profit.
  */
 pub fn buy_tokens(&mut self, ico_account_id: AccountId, amount: u128) -> u128
