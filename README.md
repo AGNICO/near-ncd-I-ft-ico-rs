@@ -103,7 +103,7 @@ pub fn transfer_money(&mut self, account_id: AccountId, amount: u64)
 ```
 
 
-## Usage
+## Demo usage
 
 ### Build and Dev deploy contracts
 
@@ -146,11 +146,44 @@ The FT ICO contract dev-account should be the same as `$CONTRACT_NAME`
 
     echo $ICO $CONTRACT_NAME
 
-
-### Initialize the FT ICO contract
+### Initialize the FT ICO contract (B)
 
     near call $ICO new '{"owner_id": "'$ICO'", "total_supply": "1000", "metadata": { "spec": "ft-1.0.0", "name": "NCD Token", "symbol": "NCDT", "decimals": 2 }}' --accountId $ICO
 
 Get the fungible token metadata
 
     near view $ICO ft_metadata
+
+Create some demo ICO offers
+
+    near call $ICO new_offer '{"near_price":10, "supply":100}' --accountId $ICO
+
+    near call $ICO new_offer '{"near_price":20, "supply":200}' --accountId $ICO
+
+    near call $ICO new_offer '{"near_price":30, "supply":300}' --accountId $ICO
+
+    near call $ICO new_offer '{"near_price":40, "supply":0}' --accountId $ICO
+
+Get all available offers
+
+    near view $ICO get_all_offers '{"from_index":0, "limit":20}' --accountId $ICO
+
+Add new authorized Seller/Exchange
+
+    near call $ICO new_seller '{"account_id":"''$EXCHANGE", "fee":10.0}' --accountId $ICO
+
+Get all authorized Sellers/Exchanges
+
+    near view $ICO get_all_sellers '{"from_index":0, "limit":20}'
+
+### Sell FT ICO offer via EXCHANGE contract to a 3rd buyer
+
+    near call $EXCHANGE transfer_tokens '{"ico_account_id": "'$ICO'", "buyer_account_id": "<buyer_test_acount>", "near_price": 20, "tokens": 1, "msg":"Test transfer"}' --accountId <buyer_test_acount> --gas 300000000000000
+
+Get FT Balance of `buyer_test_account` - The response should be `1`
+
+    near view $ICO ft_balance_of '{"account_id":"<buyer_test_acount>"}'
+
+Get FT offer - The response should be `199`
+
+    near view $ICO get_offer '{"near_price":20}'
