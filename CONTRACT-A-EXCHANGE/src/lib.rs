@@ -82,6 +82,7 @@ impl Exchange {
     pub fn transfer_tokens(&self, ico_account_id: AccountId, buyer_account_id:AccountId, near_price: u128, tokens: u128, msg: String) -> Promise {
         let available_balance = env::account_balance() + env::account_locked_balance();
         assert!(available_balance > near_price * tokens * YOCTO_NEAR + 5*YOCTO_NEAR, "No available balance to finish the transaction: {}", available_balance.to_string());
+        assert!(env::attached_deposit() >= near_price * tokens, "Please attach minimum deposit: {} NEAR", (near_price * tokens).to_string());
         let prepaid_gas = env::prepaid_gas();
         ext_ft_ico::get_seller(
             env::current_account_id().to_string(), // function parameter ('account_id')
