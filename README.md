@@ -10,7 +10,7 @@ Any content produced by NEAR, or developer resources that NEAR provides, are for
 
 ## Contract A - EXCHANGE contract
 
-```ts
+```rs
 /**
  * Cross contract call method:
  * 1) It checks whether the Seller/Exchange contract (A) is authorized in FT ICO contract (B) or not
@@ -23,7 +23,7 @@ pub fn transfer_tokens(&self, ico_account_id: AccountId, buyer_account_id:Accoun
 /**
  * Callback method for transfer_tokens cross contract call.
  *
- * If all 3 are successful, the buy_tokens method is called and Seller/Exchange contract(A) sends money for tokens to the FT ICO contract (B)
+ * If all 3 promise results are successful, the Seller/Exchange contract(A) sends money for transfered tokens to the FT ICO contract (B)
  * This method returns a reward/fee, which is transfered back from FT ICO contract (B) to the Seller/Exchange contract (A) as a profit.
  */
 pub fn buy_tokens(&mut self, ico_account_id: AccountId, amount: u128) -> u128
@@ -36,7 +36,7 @@ pub fn transfer_money(&mut self, account_id: AccountId, amount: u64)
 
 ## Contract B - Fungible Token ICO contract
 
-```ts
+```rs
 /**
  * Initialization of the Fungible Token contract with [FT metadata (NEP-148)](https://nomicon.io/Standards/FungibleToken/Metadata.html#reference-level-explanation){:target="_blank"}
  */
