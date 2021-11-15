@@ -174,7 +174,7 @@ Get all authorized Sellers/Exchanges
 
     near view $ICO get_all_sellers '{"from_index":0, "limit":20}'
 
-### Sell FT ICO offer via EXCHANGE contract to a 3rd buyer
+### Sell FT ICO offer via EXCHANGE contract to a 3rd party buyer
 
 Add storage deposit for a user
 
