@@ -6,8 +6,6 @@
 
 ## ⚠️ Warning
 
-This is DEMO only! This app was built only for demonstration purposes during [Near Certified Developer I](https://www.near.university/learn/with-our-team) course.
-
 Any content produced by NEAR, or developer resources that NEAR provides, are for educational and inspiration purposes only. NEAR does not encourage, induce or sanction the deployment of any such applications in violation of applicable laws or regulations.
 
 ## Contract A - EXCHANGE contract
