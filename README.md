@@ -2,7 +2,7 @@
 
 ![Fungible Token ICo Exchange](https://github.com/AGNICO/near-ncd-I-ico-exchange-rs/blob/master/docs/ncd-1.png)
 
-[video 1] - Soon
+![caption](https://www.loom.com/share/17816b4162e4485b98890e4c71583d24?sharedAppSource=personal_library)
 
 ## ⚠️ Warning
 
