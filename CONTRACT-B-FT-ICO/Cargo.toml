@@ -10,7 +10,6 @@ near-sdk-sim = "3.1.1"
 
 # remember to include a line for each contract
 fungible-token = { path = "./ft" }
-defi = { path = "./test-contract-defi" }
 
 [profile.release]
 codegen-units = 1
