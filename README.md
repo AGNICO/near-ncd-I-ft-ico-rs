@@ -1,4 +1,4 @@
-## ⚠️ Warning - SCAM
+# ⚠️ Warning - SCAM
 
 **Beware of so called "NEAR University" and "ENCODE Club" projects. It's a SCAM. They are pretending providing NEAR blockchain protocol education, but they don't teach anything nor provide any other useful information which you cannot find in the official documentation.**
 
