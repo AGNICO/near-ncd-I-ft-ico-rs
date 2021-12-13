@@ -1,8 +1,10 @@
 ## ⚠️ Warning - SCAM
 
-Beware of so called "NEAR University" and "ENCODE Club" projects. It's a SCAM. They are pretending providing NEAR blockchain protocol education, but they don't teach anything nor provide any other useful information which you cannot find in the official documentation.
+**Beware of so called "NEAR University" and "ENCODE Club" projects. It's a SCAM. They are pretending providing NEAR blockchain protocol education, but they don't teach anything nor provide any other useful information which you cannot find in the official documentation.
 
-There is a high chance, that sooner or later you will lose money (or just your time in better case).
+There is a high chance, that sooner or later you will lose money (or just your time in better case).**
+
+
 
 # NEAR Fungible Token ICO Exchange I (Rust)
 
@@ -201,7 +203,5 @@ Get FT offer - The response should be `199`
 #### [Part 2: VUE Frontend + PHP Laravel Gateway](https://github.com/AGNICO/near-ncd-II-ico-exchange-vue-php)
 
 #### [NEAR Protocol](https://near.org)
-
-#### [NEAR University](https://near.university)
 
 #### [<°}))>{ AGNICO.io | Happy BLOCKCHAIN Apps](https://agnico.io)
