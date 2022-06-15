@@ -1,6 +1,6 @@
 # NEAR Fungible Token ICO Exchange I (Rust)
 
-![Fungible Token ICo Exchange](https://github.com/AGNICO/near-ncd-I-ico-exchange-rs/blob/master/docs/ncd-1.png)
+![Fungible Token ICo Exchange](https://github.com/AGNICO/near-ncd-I-ft-ico-rs/blob/master/docs/ncd-1.png)
 
 ## Contract A - EXCHANGE contract
 
